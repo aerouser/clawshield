@@ -1,0 +1,53 @@
+name: ClawShield Security Scan
+
+on:
+  pull_request:
+    branches: [ "main" ]
+  push:
+    branches: [ "main" ]
+
+jobs:
+  scan:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Install ClawShield (pinned version)
+        run: |
+          set -euo pipefail
+          CLAWSHIELD_REF="v1.0.0"
+          curl -fsSL "https://raw.githubusercontent.com/aerouser/clawshield/${CLAWSHIELD_REF}/install.sh" | bash
+          clawshield --version
+      
+      - name: Scan repository
+        run: |
+          set -euo pipefail
+          echo "🔍 Running ClawShield security scan..."
+          clawshield scan . --format json --output scan-report.json || true
+          
+          # Extract score from report
+          SCORE=$(cat scan-report.json | grep -o '"score":[0-9]*' | cut -d':' -f2)
+          echo "📊 Security Score: $SCORE/100"
+          
+          # Fail if score >= 60
+          if [ "$SCORE" -ge 60 ]; then
+            echo "❌ SECURITY CHECK FAILED: Score $SCORE is above threshold (60)"
+            echo "📋 Review scan-report.json for details"
+            exit 1
+          else
+            echo "✅ SECURITY CHECK PASSED: Score $SCORE is below threshold (60)"
+          fi
+      
+      - name: Upload scan report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: clawshield-scan-report
+          path: scan-report.json
+          retention-days: 30
