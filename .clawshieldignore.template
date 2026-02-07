@@ -1,0 +1,135 @@
+# .clawshieldignore - Security Tool Declaration
+# Template oficial para ferramentas de segurança no ecossistema OpenClaw
+# Versão: 1.0
+# Documentação: projects/clawshield/docs/CLAWSHIELDIGNORE-SPEC.md
+
+# ============================================
+# SEÇÃO 1: IDENTIFICAÇÃO (obrigatória)
+# ============================================
+
+tool: clawshield                    # Nome da ferramenta de segurança
+type: security-tool                 # Tipo: security-tool | scanner | detector
+version: "1.0"                      # Versão desta declaração
+
+# ============================================
+# SEÇÃO 2: JUSTIFICATIVA (obrigatória)
+# ============================================
+
+reason: >
+  Esta skill contém intencionalmente padrões considerados maliciosos
+  para fins de detecção, educação, análise de segurança e proteção
+  do ecossistema OpenClaw contra ameaças reais.
+
+# Descrição detalhada do propósito
+description: |
+  Esta é uma ferramenta de segurança que:
+  - Detecta malware e padrões maliciosos em outras skills
+  - Documenta vetores de ataque para educação
+  - Analisa comportamento suspeito em código
+  - Protege usuários de ameaças reais
+
+# ============================================
+# SEÇÃO 3: REGRAS IGNORADAS (específicas)
+# ============================================
+
+ignore:
+  # Liste AQUI os IDs específicos das regras que devem ser ignoradas
+  # NUNCA use wildcards (*) - sempre seja específico
+  # NUNCA use "ignore all" - isso é inaceitável
+  
+  # Exemplos comuns para ferramentas de segurança:
+  - EXFILTRATION_WEBHOOK      # Documenta técnicas de exfiltração
+  - CREDENTIAL_HARVESTING     # Detecta acesso a credenciais
+  - REVERSE_SHELL            # Identifica backdoors
+  - BASE64_OBFUSCATION       # Encontra payloads ofuscados
+  - SUSPICIOUS_DOWNLOAD      # Detecta download&execute
+  - FILE_EXFILTRATION        # Identifica roubo de dados
+  # Adicione mais conforme necessário, sempre específico
+
+# ============================================
+# SEÇÃO 4: ESCOPO (onde aplicar as exceções)
+# ============================================
+
+scope:
+  files:
+    # Arquivos/pastas onde os padrões intencionais existem
+    - src/scanners/**
+    - src/detectors/**
+    - docs/examples/**
+    - tests/fixtures/**
+    - SKILL.md
+    
+  languages:
+    # Linguagens usadas na ferramenta
+    - javascript
+    - typescript
+    - bash
+    
+  exclude:
+    # Arquivos que NÃO devem ter exceções (sempre escaneados)
+    - node_modules/**
+    - dist/**
+    - build/**
+
+# ============================================
+# SEÇÃO 5: VERIFICAÇÃO E AUDITORIA
+# ============================================
+
+verification:
+  # Declarações verificáveis sobre esta ferramenta
+  - "Esta skill é uma ferramenta de segurança, não malware"
+  - "Padrões maliciosos são usados apenas para detecção e educação"
+  - "Todo código é aberto e auditável"
+  - "Não executa comportamento malicioso em produção"
+  - "Cumpre os princípios de segurança do OpenClaw"
+
+# Informações de auditoria
+audit:
+  created: "2026-02-06"              # Data de criação deste arquivo
+  reviewed_by: "Orion/Gustavo"       # Quem revisou
+  review_date: "2026-02-06"          # Quando revisou
+  purpose: "Security research and ecosystem protection"
+  
+# ============================================
+# SEÇÃO 6: EXPIRAÇÃO (opcional)
+# ============================================
+
+# expires: "2027-02-06"              # Data de expiração (revisão anual recomendada)
+# renewal_required: true              # Se true, precisa ser renovado
+
+# ============================================
+# SEÇÃO 7: ASSINATURA (opcional, futuro)
+# ============================================
+
+# Quando ClawShield suportar assinaturas:
+# signature: "base64_encoded_signature"
+# public_key: "path/to/public_key.pem"
+
+# ============================================
+# NOTAS IMPORTANTES
+# ============================================
+
+# 1. NUNCA use wildcards (*) em 'ignore'
+# 2. SEMPRE justifique cada regra ignorada
+# 3. MANTENHA este arquivo atualizado
+# 4. REVISE anualmente ou quando mudar código
+# 5. DOCUMENTE novos padrões adicionados
+
+# ============================================
+# EXEMPLO DE USO
+# ============================================
+
+# Para usar este template:
+# 1. Copie para sua skill: cp .clawshieldignore.template /skills/sua-skill/.clawshieldignore
+# 2. Personalize as seções 1-5 conforme sua ferramenta
+# 3. Liste apenas as regras específicas que precisa ignorar
+# 4. Nunca remova a seção de justificativa
+# 5. Commit junto com o código
+
+# ============================================
+# REFERÊNCIAS
+# ============================================
+
+# Especificação completa: projects/clawshield/docs/CLAWSHIELDIGNORE-SPEC.md
+# FAQ: projects/clawshield/docs/FAQ.md
+# Reportar problemas: github.com/openclaw/clawshield/issues

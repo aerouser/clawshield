@@ -1,0 +1,21 @@
+{
+  "name": "clawshield",
+  "version": "1.0.0",
+  "description": "Security scanner for OpenClaw skills - detects malware, credential theft, and malicious patterns",
+  "main": "src/index.js",
+  "bin": {
+    "clawshield": "./bin/clawshield.js",
+    "clawshield-install": "./bin/clawshield-install.js"
+  },
+  "scripts": {
+    "test": "node tests/run-tests.js",
+    "scan": "node bin/clawshield.js scan",
+    "install": "node bin/clawshield-install.js"
+  },
+  "keywords": ["security", "scanner", "openclaw", "skills", "malware-detection"],
+  "author": "Orion / Gustavo",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

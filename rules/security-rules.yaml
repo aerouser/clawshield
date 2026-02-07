@@ -1,0 +1,104 @@
+# ClawShield Security Rules
+# Define patterns and checks for security scanning
+
+rules:
+  # Critical - Automatic block
+  critical:
+    - id: EXFILTRATION_WEBHOOK
+      name: "Exfiltration to external webhook"
+      pattern: 'webhook\.site|requestbin|hookbin|ngrok\.io.*POST|curl.*https://.*data'
+      severity: 100
+      description: "Detected potential data exfiltration to external service"
+      
+    - id: CREDENTIAL_HARVESTING
+      name: "Credential harvesting"
+      pattern: 'process\.env|\.env\.|os\.environ|cat.*\.env|printenv|getenv'
+      severity: 95
+      description: "Attempting to access environment variables or credentials"
+      
+    - id: REVERSE_SHELL
+      name: "Reverse shell detection"
+      pattern: 'nc\s+-e|bash\s+-i|/bin/sh.*-i|socket.*connect|subprocess.*shell'
+      severity: 100
+      description: "Potential reverse shell or backdoor"
+      
+    - id: BASE64_OBFUSCATION
+      name: "Base64 obfuscation"
+      pattern: 'base64\s+-d|atob\(|Buffer\.from.*base64|b64decode'
+      severity: 85
+      description: "Base64 encoded payload - possible obfuscation"
+      
+    - id: SUSPICIOUS_DOWNLOAD
+      name: "Suspicious download and execute"
+      pattern: 'curl.*\|.*bash|wget.*\|.*sh|curl.*\|.*python|download.*execute'
+      severity: 95
+      description: "Downloading and executing code from remote source"
+      
+    - id: FILE_EXFILTRATION
+      name: "File exfiltration"
+      pattern: 'curl.*-F.*file|scp.*@|rsync.*@|upload.*http.*file'
+      severity: 90
+      description: "Uploading files to external servers"
+
+  # High - Warning with review required
+  high:
+    - id: NETWORK_REQUEST
+      name: "External network request"
+      pattern: 'fetch\(|axios\.|request\(|curl|wget|http\.get'
+      severity: 70
+      description: "Making external network requests"
+      
+    - id: FILE_SYSTEM_WRITE
+      name: "File system write outside workspace"
+      pattern: 'writeFile.*\/etc|writeFile.*\/root|fs\.write.*\/tmp'
+      severity: 75
+      description: "Writing files outside permitted directories"
+      
+    - id: SHELL_EXECUTION
+      name: "Shell command execution"
+      pattern: 'exec\(|execSync|spawn\(|shell_exec|system\('
+      severity: 65
+      description: "Executing shell commands"
+      
+    - id: DYNAMIC_CODE
+      name: "Dynamic code execution"
+      pattern: 'eval\(|Function\(|new Function|setTimeout.*string'
+      severity: 60
+      description: "Executing dynamic code"
+
+  # Medium - Informational
+  medium:
+    - id: SENSITIVE_FILE_ACCESS
+      name: "Sensitive file access"
+      pattern: '\.ssh\/|\.aws\/|\.docker\/|token|secret|key|password'
+      severity: 45
+      description: "Accessing potentially sensitive files"
+      
+    - id: DEPRECATION_BYPASS
+      name: "Security deprecation bypass"
+      pattern: 'NODE_TLS_REJECT_UNAUTHORIZED|verify.*false|insecure'
+      severity: 40
+      description: "Disabling security validations"
+
+scoring:
+  weights:
+    critical: 10
+    high: 5
+    medium: 2
+    low: 1
+  
+  thresholds:
+    clean: 0-30
+    caution: 31-60
+    warning: 61-85
+    blocked: 86-100
+
+behavior:
+  max_file_size: 1048576  # 1MB
+  max_files_scanned: 100
+  ignore_patterns:
+    - "node_modules/**"
+    - ".git/**"
+    - "*.test.js"
+    - "*.spec.js"
+    - "tests/**"
