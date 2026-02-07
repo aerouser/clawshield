@@ -14,7 +14,7 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # Configuration
-REPO_URL="https://github.com/gustavosr8/clawshield"
+REPO_URL="https://github.com/aerouser/clawshield"
 INSTALL_DIR="/usr/local/bin"
 TEMP_DIR=$(mktemp -d)
 
