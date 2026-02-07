@@ -104,6 +104,32 @@
 
 ---
 
+## 🔍 Observações do Desenvolvedor/Usuário
+
+> Notas de quem usa o ClawShield diariamente
+
+### Performance
+- **Scan muito rápido**: ~7-15ms para skills pequenas
+- **Root Safety Mode**: Ativa corretamente quando rodo como root
+- **Sem overhead**: Não senti lentidão no workflow
+
+### Usabilidade
+- **Output claro**: Ícones (🟢🟡🟠🔴) facilitam leitura rápida
+- **Exit codes úteis**: 0-3 permitem automação fácil em scripts
+- **JSON option**: `--format json` funciona bem para CI/CD
+
+### Efetividade
+- **Caso nanopdf**: Detectou payload base64 escondido
+- **Skill github**: Aprovou (0/100) — corretamente identificou como segura
+- **Skillvet fixtures**: Detectou padrões maliciosos de teste corretamente
+
+### Pontos de atenção
+- [ ] Emojis às vezes quebram em terminais sem suporte a UTF-8
+- [ ] Score de 60 pode ser muito conservador para alguns casos
+- [ ] Falta indicador visual de progresso em scans grandes
+
+---
+
 ## 📝 Notas Diárias
 
 ### 2026-02-07 - Lançamento v1.0.0
@@ -112,6 +138,7 @@
 - Post recebeu comentário do AuraSecurity (bot de scan)
 - Concorrente AgentVet identificado (mais maduro, mais upvotes)
 - Diferencial: case real + 100% offline
+- Observações de uso próprio adicionadas
 
 ---
 
